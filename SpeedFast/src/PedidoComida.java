@@ -1,17 +1,21 @@
  public class PedidoComida extends Pedido {
 
-    public PedidoComida(int idPedido, String direccionEntrega) {
-       super(idPedido, direccionEntrega, "Comida");
-    }
-    @Override
-    public void asignarRepartidor() {
-        System.out.println("[Pedido Comida] Asignando repartidor...");
-        System.out.println("→ Verificando mochila térmica... OK");
-    }
+     public PedidoComida(int idPedido, String direccionEntrega, double distanciaKm) {
+         super(idPedido, direccionEntrega, distanciaKm);
+     }
 
-    @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        asignarRepartidor(); // Llama a la lógica de verificación
-        System.out.println("→ Pedido asignado a " + nombreRepartidor);
-    }
-}
+     @Override
+     public int calcularTiempoEntrega() {
+         return (int) (15 + (2 * getDistanciaKm()));
+     }
+
+     @Override
+     public String getTipoEntrega() {
+         return "Comida a domicilio";
+     }
+
+     @Override
+     public String getFactoresDuracion() {
+         return "Tiempo base de preparación (15 min) + 2 min por cada kilómetro de distancia";
+     }
+ }

@@ -1,45 +1,50 @@
-public class Pedido {
+public abstract class Pedido {
     private int idPedido;
     private String direccionEntrega;
-    private String tipoPedido;
+    private double distanciaKm;
 
     // Construcctor
-    public Pedido(int idPedido, String direccionEntrega, String tipoPedido) {
+    public Pedido(int idPedido, String direccionEntrega, double distanciaKm) {
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
-        this.tipoPedido = tipoPedido;
+        this.distanciaKm = distanciaKm;
     }
-    //metodo sobrecribible
-    public void asignarRepartidor(){
-        System.out.println("Asignado a repartidor a la direccion :" + direccionEntrega);
-    }
-    //metodo sobrecargado
-    public void asignarRepartidor(String nombreRepartidor){
-        System.out.println("Asignado a repartidor:" +  nombreRepartidor + "para el pedido #" + idPedido);
+    // metodo abstracto
+    public abstract int calcularTiempoEntrega();
+    public abstract String getTipoEntrega();
+    public abstract String getFactoresDuracion();
+
+   //metodo para mostrar datos del pedido
+    public void mostrarResumen() {
+        System.out.printf("%s #%03d%n", getClass().getSimpleName(), idPedido);
+        System.out.println("Tipo de entrega: " + getTipoEntrega());
+        System.out.println("Dirección: " + direccionEntrega);
+        System.out.println("Distancia: " + (int) distanciaKm + " km");
+        System.out.println("Factores que afectan la duración: " + getFactoresDuracion());
+        System.out.println("Tiempo estimado de entrega: " + calcularTiempoEntrega() + " minutos");
     }
     //Getter y Setters
-
     public int getIdPedido() {
         return idPedido;
     }
 
-    public void setIdPedido(int idPedido) {
-        this.idPedido = idPedido;
-    }
+public void setIdPedido(int idPedido) {
+    this.idPedido = idPedido;
+}
 
-    public String getDireccionEntrega() {
-        return direccionEntrega;
-    }
+public String getDireccionEntrega() {
+    return direccionEntrega;
+}
 
-    public void setDireccionEntrega(String direccionEntrega) {
-        this.direccionEntrega = direccionEntrega;
-    }
+public void setDireccionEntrega(String direccionEntrega) {
+    this.direccionEntrega = direccionEntrega;
+}
 
-    public String getTipoPedido() {
-        return tipoPedido;
-    }
+public double getDistanciaKm() {
+    return distanciaKm;
+}
 
-    public void setTipoPedido(String tipoPedido) {
-        this.tipoPedido = tipoPedido;
-    }
+ public void setDistanciaKm(double distanciaKm) {
+    this.distanciaKm = distanciaKm;
+ }
 }
