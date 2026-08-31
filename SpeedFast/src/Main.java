@@ -1,32 +1,94 @@
+import modelos.Pedido;
+import modelos.PedidoComida;
+import modelos.PedidoEncomienda;
+import modelos.PedidoExpress;
+import servicios.ControladorDeEnvios;
+
 public class Main {
     public static void main(String[] args) {
-        //
-        Pedido p1 = new PedidoComida(1, "Paula jaraquemada 083", 12);
-        Pedido p2 = new PedidoEncomienda(2, "Luis Matte Larrain 1168", 20);
-        Pedido p3 = new PedidoExpress(3, "Avenida Siempreviva 742", 5);
+        System.out.println("=================================================================================");
+        System.out.println("                 INICIANDO SIMULACIÓN DEL SISTEMA DE REPARTO                     ");
+        System.out.println("=================================================================================");
+        System.out.println();
 
-        // Arreglo polimórfico para recorrer y mostrar resumen
-        Pedido[] pedidos = {p1, p2, p3};
+        // 1. Creación de Pedidos
+        System.out.println(">>> [1] CREACIÓN DE PEDIDOS");
+        Pedido comida = new PedidoComida(101, "Av. Paula Jaraquemada 083", 12.0);
+        Pedido encomienda = new PedidoEncomienda(102, "Luis Matte Larraín 1168", 20.0);
+        Pedido express = new PedidoExpress(103, "Avenida Siempreviva 742", 4.5);
+        Pedido expressLargo = new PedidoExpress(104, "Gran Avenida 4500", 8.0);
 
-        for (Pedido pedido : pedidos) {
-            pedido.mostrarResumen();
-            System.out.println(); // Línea en blanco para separar los datos
-        }
+        System.out.println("Pedidos creados exitosamente.");
+        System.out.println();
 
-        // comparativa de tiempos estimados
-        System.out.println("=========================================================");
-        System.out.println("  COMPARATIVA DE TIEMPOS ESTIMADOS DE ENTREGA (MINUTOS) ");
-        System.out.println("=========================================================");
-        for (Pedido pedido : pedidos) {
-            int tiempo = pedido.calcularTiempoEntrega();
-            System.out.printf("- Pedido #%03d [%-16s] -> Distancia: %2d km | Tiempo Estimado: %2d min (%s)%n", 
-                pedido.getIdPedido(),
-                pedido.getClass().getSimpleName(),
-                (int) pedido.getDistanciaKm(),
-                tiempo,
-                pedido.getTipoEntrega()
-            );
-        }
-        System.out.println("=========================================================");
+        // 2. Registro de pedidos en el Controlador de Envíos
+        System.out.println(">>> [2] INICIALIZACIÓN DEL CONTROLADOR DE ENVÍOS");
+        ControladorDeEnvios controlador = new ControladorDeEnvios();
+        controlador.registrarPedido(comida);
+        controlador.registrarPedido(encomienda);
+        controlador.registrarPedido(express);
+        controlador.registrarPedido(expressLargo);
+        System.out.println("Pedidos registrados en el historial de seguimiento.");
+        System.out.println();
+
+        // 3. Asignación de Repartidores (Automática y Manual)
+        System.out.println(">>> [3] ASIGNACIÓN DE REPARTIDORES");
+        
+        // Automáticas
+        System.out.println("--- Asignaciones Automáticas (Polimorfismo / Sobrescritura) ---");
+        comida.asignarRepartidor();
+        express.asignarRepartidor();
+        
+        // Manuales
+        System.out.println("--- Asignaciones Manuales (Sobrecarga de Métodos) ---");
+        encomienda.asignarRepartidor("Carlos Gómez (Camión Express)");
+        expressLargo.asignarRepartidor("Sofía Martínez (Bicicleta Eléctrica)");
+        System.out.println();
+
+        // 4. Mostrar Resúmenes e Información Detallada (Abstracción)
+        System.out.println(">>> [4] RESUMEN DE LOS PEDIDOS REGISTRADOS");
+        System.out.println("---------------------------------------------------------------------------------");
+        comida.mostrarResumen();
+        System.out.println("---------------------------------------------------------------------------------");
+        encomienda.mostrarResumen();
+        System.out.println("---------------------------------------------------------------------------------");
+        express.mostrarResumen();
+        System.out.println("---------------------------------------------------------------------------------");
+        expressLargo.mostrarResumen();
+        System.out.println("---------------------------------------------------------------------------------");
+        System.out.println();
+
+        // 5. Interacciones Funcionales: Reserva, Despacho y Cancelación (Interfaces y Lógica de Negocio)
+        System.out.println(">>> [5] GESTIÓN DE ENVÍOS (RESERVA, DESPACHO Y CANCELACIÓN)");
+        
+        System.out.println("--- Procesando Reservas ---");
+        expressLargo.reservar();
+        
+        System.out.println("\n--- Procesando Envíos ---");
+        comida.despachar();
+        express.despachar();
+        
+        System.out.println("\n--- Procesando Cancelaciones ---");
+        encomienda.cancelar();
+        
+        System.out.println("\n--- Intentos de Operaciones Inválidas ---");
+        // Intentar cancelar un pedido ya despachado
+        comida.cancelar();
+        // Intentar despachar un pedido ya cancelado
+        encomienda.despachar();
+        // Intentar reservar un pedido ya despachado
+        comida.reservar();
+        // Intentar reservar un pedido ya cancelado
+        encomienda.reservar();
+        System.out.println();
+
+        // 6. Visualización de Historial (Interfaz Rastreable)
+        System.out.println(">>> [6] CONSULTA DEL HISTORIAL GENERAL");
+        controlador.verHistorial();
+        System.out.println();
+        
+        System.out.println("=================================================================================");
+        System.out.println("                 SIMULACIÓN CONCLUIDA CON ÉXITO                                  ");
+        System.out.println("=================================================================================");
     }
 }
